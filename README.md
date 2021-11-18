@@ -5,6 +5,9 @@ There are a few others out there, but i found it painful to have to continually 
 This handles jobs in parallel and tidys up must of the boiler plate.
 It also allows you to access variables in curent scope automatically which is handy.
 
+This is blazing fast and used for processing thousands of jobs at once.
+Memory and CPU will run pretty hot as its very greedy, so tweak `maxThreads` as needed.
+
 # How to run
 ```powershell
 # Dot source the file
@@ -24,7 +27,7 @@ function test($id)
 
 #Fire it up!
 $results = @()
-$results += Invoke-FastThread -objects $ids -scriptblock {
+$results += Invoke-FastThread -objects $ids -maxThreads 32 -scriptblock {
     #the current record is accessible via [$_]
     $id = $_
 

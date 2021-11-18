@@ -22,13 +22,22 @@ function test($id)
 }
 
 #Fire it up!
-Invoke-FastThread -objects $ids -scriptblock {
+$results = @()
+$results += Invoke-FastThread -objects $ids -scriptblock {
     #the current record is accessible via [$_]
     $id = $_
+
+    #Sleep to demonstrate threading
     start-sleep -milliseconds (Get-Random -Maximum 100)
+
+    #Can access variables from current scope automatically
     write-host ($my_message + $id)
-    #Using function already defined
+
+    #Can also use functions defined in scope automatically
     test($id)
+    
+    #Return results as normal
+    return $id
 }
 
 <## OUTPUT

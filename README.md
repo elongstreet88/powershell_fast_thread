@@ -1,3 +1,61 @@
 # Fast Thread
 A fast threading wrapper for runspace powershell multi-threading.
+This handles jobs in parallel and tidys up must of the boiler plate.
 
+It also allows you to access variables in curent scope automatically which is handy.
+
+# How to run
+```powershell
+# Dot source the file
+. ./Invoke-FastThread.ps1
+
+#Get your objects
+$ids = $(1..10)
+
+#You can use local variables in the scripblock automatically
+$my_message = "result: "
+
+#You can use local functions too!
+function test($id)
+{
+    write-host ("function test! - " + $id)
+}
+
+#Fire it up!
+Invoke-FastThread -objects $ids -scriptblock {
+    #the current record is accessible via [$_]
+    $id = $_
+    start-sleep -milliseconds (Get-Random -Maximum 100)
+    write-host ($my_message + $id)
+    #Using function already defined
+    test($id)
+}
+
+<## OUTPUT
+
+result: 3
+result: 4
+result: 5
+result: 1
+function test! - 3
+result: 6
+function test! - 4
+function test! - 5
+function test! - 1
+result: 8
+result: 7
+function test! - 6
+[0/10] jobs completed
+function test! - 8
+function test! - 7
+result: 2
+function test! - 2
+result: 9
+function test! - 9
+result: 10
+function test! - 10
+[1/10] jobs completed
+[all jobs completed]
+
+##>
+```

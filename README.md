@@ -2,7 +2,7 @@
 A fast threading wrapper for runspace powershell multi-threading.
 There are a few others out there, but i found it painful to have to continually pass functions, variables, and other limitations, so wrote my own.
 
-This handles jobs in parallel and tidys up must of the boiler plate.
+This handles jobs in parallel and tidys up most of the boiler plate.
 It also allows you to access variables in curent scope automatically which is handy.
 
 This is blazing fast and used for processing thousands of jobs at once.
